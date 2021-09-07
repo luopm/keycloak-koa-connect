@@ -345,13 +345,13 @@ Keycloak.prototype.storeGrant = function (grant, ctx) {
   return grant;
 };
 
-Keycloak.prototype.unstoreGrant = function (ctx) {
+Keycloak.prototype.unstoreGrant = function (ctx, sessionId) {
   if (this.stores.length < 2) {
     // cannot unstore, bearer-only, this is weird
     return;
   }
 
-  this.stores[1].clear(ctx);
+  this.stores[1].clear(ctx, sessionId);
 };
 
 Keycloak.prototype.getGrantFromCode = function (code, ctx) {

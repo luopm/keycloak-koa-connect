@@ -33,8 +33,25 @@ let unstore = (ctx) => {
   delete ctx.session[SessionStore.TOKEN_KEY];
 };
 
-SessionStore.prototype.clear = unstore
+// clear app session by sessionId
+SessionStore.prototype.clear = (ctx, sessionId) => {
 
+  if( ctx.app.config && ctx.app.config.session && 
+    ctx.app.config.session.store ) {
+      
+    const store = ctx.app.config.session.store;
+    const session = store.get(sessionId);
+    if(!session) {
+      console.log("Session has clear!");
+      return ; 
+    }
+
+    delete session[SessionStore.TOKEN_KEY];
+    store.set(sessionId, session)
+
+  } else console.log("Please config SessionStore in default.config.js") 
+ 
+}
 
 SessionStore.prototype.wrap = (grant) => {
   if (grant) {

@@ -29,7 +29,7 @@ Admin.prototype.getFunction = function () {
 
 function adminLogout(ctx, keycloak) {
   let data = '';
-  const {request, response} = ctx;
+  const {req: request, response} = ctx;
   request.on('data', d => {
     data += d.toString();
   });
@@ -53,7 +53,7 @@ function adminLogout(ctx, keycloak) {
       if (sessionIDs && sessionIDs.length > 0) {
         let seen = 0;
         sessionIDs.forEach(id => {
-          keycloak.unstoreGrant(id);
+          keycloak.unstoreGrant(ctx, id);
           ++seen;
           if (seen === sessionIDs.length) {
             response.body = 'ok'
